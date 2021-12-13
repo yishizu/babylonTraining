@@ -21,6 +21,10 @@ const engine = new BABYLON.Engine(canvas, true);
     const box = BABYLON.MeshBuilder.CreateBox("box", {size: 1}, scene);
     box.rotation.z = 3;
     box.rotation.x = 3;
+    // rotate 
+    box.rotation.y = BABYLON.Tools.ToRadians(45);
+    // create mesh
+    const ground = BABYLON.MeshBuilder.CreateGround("ground", {width:10, height:10},scene);
     // create sphere
     const sphere = BABYLON.MeshBuilder.CreateSphere("sphere", {diameter: 1 ,segments:32}, scene);
     sphere.position = new BABYLON.Vector3(3,0,0);
@@ -35,7 +39,32 @@ const engine = new BABYLON.Engine(canvas, true);
         new BABYLON.Vector3(0,1,0),
     ];
     const lines = BABYLON.MeshBuilder.CreateLines("lines", {points}, scene);
+    // create sounds
+    //const sound = new BABYLON.Sound("sound", "url to sound file", scene);
+    //Leave time for the sound file to load before playing it
+    //sound.play();
 
+    const animationBox = new BABYLON.Animation("wheelAnimation", "rotation.y", 30, BABYLON.Animation.ANIMATIONTYPE_FLOAT, BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE);
+    const wheelKeys = []; 
+    //At the animation key 0, the value of rotation.y is 0
+    wheelKeys.push({
+        frame: 0,
+        value: 0
+    });
+
+    //At the animation key 30, (after 1 sec since animation fps = 30) the value of rotation.y is 2PI for a complete rotation
+    wheelKeys.push({
+        frame: 30,
+        value: 2 * Math.PI
+    });
+    //Link this animation to a wheel
+    box.animations = [];
+    box.animations.push(animationBox);
+
+    
+
+    //set the keys
+    animationBox.setKeys(wheelKeys);
     //create materials
     const material1 = new BABYLON.StandardMaterial('material', scene);
     material1.diffuseColor = new BABYLON.Color3(1,0,0);
@@ -47,8 +76,7 @@ const engine = new BABYLON.Engine(canvas, true);
     const material3 = new BABYLON.StandardMaterial('material3', scene);
     material3.diffuseTexture = new BABYLON.Texture('assets/image.png')
     plane.material = material3;
-
-
+    scene.beginAnimation(box, 0, 30, true);
     return scene;
     
 }
@@ -58,4 +86,5 @@ const scene = createScene();
 
 engine.runRenderLoop(()=>{
     scene.render();
+    
 });
