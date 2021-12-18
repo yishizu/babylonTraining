@@ -1,4 +1,5 @@
 ///<reference path='./vendor/babylon.d.ts'/>
+/*
 console.log("Hello world");
 
 // get a canvas
@@ -80,6 +81,39 @@ const engine = new BABYLON.Engine(canvas, true);
     return scene;
     
 }
+
+//create scene
+const scene = createScene();
+
+engine.runRenderLoop(()=>{
+    scene.render();
+    
+});
+
+*/
+// get a canvas
+const canvas = document.getElementById("canvas");
+// create BabylonJs engine
+const engine = new BABYLON.Engine(canvas, true);
+
+var createScene = function () {
+    var scene = new BABYLON.Scene(engine);
+    var camera = new BABYLON.ArcRotateCamera("Camera", -Math.PI / 2,  Math.PI / 2, 5, BABYLON.Vector3.Zero(), scene);
+    camera.attachControl(canvas, true);
+    camera.inputs.attached.mousewheel.detachControl(canvas);
+
+    var dome = new BABYLON.PhotoDome(
+        "testdome",
+        "./textures/360photo.jpeg",
+        {
+            resolution: 32,
+            size: 1000
+        },
+        scene
+    );
+
+    return scene;
+};
 
 //create scene
 const scene = createScene();
