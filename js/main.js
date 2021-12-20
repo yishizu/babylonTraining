@@ -1,5 +1,5 @@
 ///<reference path='./vendor/babylon.d.ts'/>
-/*
+
 console.log("Hello world");
 
 // get a canvas
@@ -90,7 +90,7 @@ engine.runRenderLoop(()=>{
     
 });
 
-*/
+
 // get a canvas
 const canvas = document.getElementById("canvas");
 // create BabylonJs engine
